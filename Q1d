@@ -1,0 +1,39 @@
+#include <iostream>
+using namespace std;
+
+void combine(int nums[], int left, int mid, int right) {
+    int size1 = mid - left + 1, size2 = right - mid;
+    int first[size1], second[size2];
+
+    for (int i = 0; i < size1; i++) first[i] = nums[left + i];
+    for (int i = 0; i < size2; i++) second[i] = nums[mid + 1 + i];
+
+    int i = 0, j = 0, k = left;
+    while (i < size1 && j < size2) {
+        if (first[i] < second[j]) nums[k++] = first[i++];
+        else nums[k++] = second[j++];
+    }
+    while (i < size1) nums[k++] = first[i++];
+    while (j < size2) nums[k++] = second[j++];
+}
+
+void mergeSort(int nums[], int left, int right) {
+    if (left < right) {
+        int mid = (left + right) / 2;
+        mergeSort(nums, left, mid);
+        mergeSort(nums, mid + 1, right);
+        combine(nums, left, mid, right);
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+    int nums[n];
+
+    for (int i = 0; i < n; i++) cin >> nums[i];
+
+    mergeSort(nums, 0, n - 1);
+
+    for (int i = 0; i < n; i++) cout << nums[i] << " ";
+}
